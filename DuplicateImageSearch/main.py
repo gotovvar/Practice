@@ -51,16 +51,19 @@ def find_duplicate_images(folder):
                 if image_hash in hashes:
                     duplicates.append((image_path, hashes[image_hash]))
                     continue
-                else:
-                    hashes[image_hash] = image_path
 
+                duplicate_found = False
                 for stored_path, stored_features in features.items():
                     similarity = np.linalg.norm(image_features - stored_features)
                     if similarity < 0.5:
                         duplicates.append((image_path, stored_path))
+                        duplicate_found = True
                         break
 
-                features[image_path] = image_features
+                if not duplicate_found:
+                    hashes[image_hash] = image_path
+                    features[image_path] = image_features
+
     return duplicates
 
 
