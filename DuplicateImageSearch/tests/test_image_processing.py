@@ -2,7 +2,9 @@ import unittest
 import os
 import tempfile
 from PIL import Image
-from main import find_duplicate_images, visualize_duplicates, process_image, extract_features
+from utils.model_operation import extract_features
+from utils.visualization import visualize_duplicates
+from utils.image_processing import process_image, find_duplicate_images
 import numpy as np
 
 
