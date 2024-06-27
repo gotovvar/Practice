@@ -1,22 +1,7 @@
 import os
 import numpy as np
-import imagehash
-from PIL import Image
 from concurrent.futures import ProcessPoolExecutor, as_completed
-from utils.model_operation import extract_features
-
-
-def process_image(image_path):
-    try:
-        image = Image.open(image_path)
-        image.verify()
-        image = Image.open(image_path)
-        image_hash = imagehash.phash(image)
-        image_features = extract_features(image_path)
-        return image_path, image_hash, image_features
-    except (IOError, SyntaxError) as e:
-        print(f"Could not open or verify image file {image_path}: {e}")
-        return image_path, None, None
+from utils.processing import process_image
 
 
 def find_duplicate_images(folder):

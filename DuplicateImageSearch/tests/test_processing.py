@@ -2,13 +2,11 @@ import unittest
 import os
 import tempfile
 from PIL import Image
-from utils.model_operation import extract_features
-from utils.visualization import visualize_duplicates
-from utils.image_processing import process_image, find_duplicate_images
+from utils.processing import process_image, extract_image_features
 import numpy as np
 
 
-class TestImageProcessing(unittest.TestCase):
+class TestProcessing(unittest.TestCase):
 
     def setUp(self):
         self.test_dir = tempfile.TemporaryDirectory()
@@ -42,40 +40,10 @@ class TestImageProcessing(unittest.TestCase):
         self.assertIsNone(image_features)
         self.assertEqual(image_path, corrupt_image_path)
 
-    def test_find_duplicate_images(self):
-        duplicates = find_duplicate_images(self.test_dir.name)
-        self.assertEqual(len(duplicates), 1)
-        expected_pairs = {(self.image1_path, self.image2_path), (self.image2_path, self.image1_path)}
-        self.assertLessEqual(set(duplicates), expected_pairs)
-
-    def test_find_no_duplicates(self):
-        duplicates = find_duplicate_images(self.test_dir.name)
-        self.assertEqual(len(duplicates), 1)  # Only 1 duplicate pair expected
-        expected_pairs = {(self.image1_path, self.image2_path), (self.image2_path, self.image1_path)}
-        self.assertLessEqual(set(duplicates), expected_pairs)
-        self.assertNotIn((self.image3_path, self.image1_path), duplicates)
-        self.assertNotIn((self.image3_path, self.image2_path), duplicates)
-
-    def test_visualize_duplicates(self):
-        duplicates = [(self.image1_path, self.image2_path)]
-        try:
-            visualize_duplicates(duplicates)
-            self.assertTrue(True)
-        except Exception as e:
-            self.fail(f"visualize_duplicates вызвало исключение: {e}")
-
-    def test_visualize_no_duplicates(self):
-        duplicates = []
-        try:
-            visualize_duplicates(duplicates)
-            self.assertTrue(True)
-        except Exception as e:
-            self.fail(f"visualize_duplicates вызвало исключение: {e}")
-
-    def test_extract_features(self):
-        features1 = extract_features(self.image1_path)
-        features2 = extract_features(self.image2_path)
-        features3 = extract_features(self.image3_path)
+    def test_extract_image_features(self):
+        features1 = extract_image_features(self.image1_path)
+        features2 = extract_image_features(self.image2_path)
+        features3 = extract_image_features(self.image3_path)
         self.assertIsInstance(features1, np.ndarray)
         self.assertIsInstance(features2, np.ndarray)
         self.assertIsInstance(features3, np.ndarray)
@@ -84,9 +52,9 @@ class TestImageProcessing(unittest.TestCase):
         self.assertGreater(len(features3), 0)
 
     def test_feature_similarity(self):
-        features1 = extract_features(self.image1_path)
-        features2 = extract_features(self.image2_path)
-        features3 = extract_features(self.image3_path)
+        features1 = extract_image_features(self.image1_path)
+        features2 = extract_image_features(self.image2_path)
+        features3 = extract_image_features(self.image3_path)
         similarity1_2 = np.linalg.norm(features1 - features2)
         similarity1_3 = np.linalg.norm(features1 - features3)
         self.assertLess(similarity1_2, 0.5)

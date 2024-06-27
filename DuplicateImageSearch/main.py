@@ -1,5 +1,5 @@
-from utils.image_processing import find_duplicate_images
-from utils.visualization import visualize_duplicates
+from utils.core import find_duplicate_images
+from utils.ui import visualize_duplicates
 
 
 def main():
