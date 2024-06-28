@@ -15,14 +15,19 @@ def find_duplicate_images(folder):
     :type folder: str
     :return: List of pairs of paths to duplicate images.
     :rtype: list
+    :raises FileNotFoundError: If the specified directory does not exist.
+    :raises ValueError: If no supported image formats are found in the directory.
     """
     if not os.path.isdir(folder):
-        raise FileNotFoundError(f"The directory {folder} does not exist.")
+        raise FileNotFoundError(f"The directory '{folder}' does not exist. "
+                                "Please provide a valid directory path that contains images.")
 
     image_files = [filename for filename in os.listdir(folder) if filename.lower().endswith(SUPPORTED_IMAGE_FORMATS)]
 
     if not image_files:
-        raise ValueError(f"No supported image formats found in {folder}.")
+        raise ValueError(
+            f"No supported image formats found in '{folder}'. Please ensure that the directory contains images with "
+            f"one of the following formats: {', '.join(SUPPORTED_IMAGE_FORMATS)}.")
 
     hashes = {}
     features = {}

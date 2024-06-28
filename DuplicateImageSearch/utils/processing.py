@@ -21,17 +21,14 @@ def extract_image_features(image_path):
     :return: Feature vector of the image.
     :rtype: np.ndarray
     """
-    try:
-        img = image.load_img(image_path, target_size=(224, 224))
-        img_array = image.img_to_array(img)
-        img_array = np.expand_dims(img_array, axis=0)
-        img_array = preprocess_input(img_array)
-        features = model.predict(img_array)
-        features = features.flatten()
-        img_hash = imagehash.average_hash(img)
-        return image_path, img_hash, features
-    except (FileNotFoundError, ValueError) as e:
-        print(f"Could not open image file {image_path}: {e}")
+    img = image.load_img(image_path, target_size=(224, 224))
+    img_array = image.img_to_array(img)
+    img_array = np.expand_dims(img_array, axis=0)
+    img_array = preprocess_input(img_array)
+    features = model.predict(img_array)
+    features = features.flatten()
+    img_hash = imagehash.average_hash(img)
+    return image_path, img_hash, features
 
 
 def process_image(image_path):

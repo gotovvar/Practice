@@ -17,7 +17,14 @@ def load_image(image_path):
         image.verify()
         image = Image.open(image_path)
         return image
-    except (IOError, SyntaxError) as e:
-        print(f"Could not open or verify image file {image_path}: {e}")
+    except IOError as e:
+        print(f"Could not open image file '{image_path}': {e}")
+        print("Please check if you have the necessary permissions to open the file. "
+              "Ensure the file is not corrupted and is a valid image format.")
+        return None
+    except SyntaxError as e:
+        print(f"Syntax error in image file '{image_path}': {e}")
+        print("Please ensure the image file is not corrupted. "
+              "Try opening the file with a different image viewer to verify its integrity.")
         return None
     
