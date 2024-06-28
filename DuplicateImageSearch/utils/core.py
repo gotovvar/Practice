@@ -16,14 +16,21 @@ def find_duplicate_images(folder):
     :return: List of pairs of paths to duplicate images.
     :rtype: list
     """
+    if not os.path.isdir(folder):
+        raise FileNotFoundError(f"The directory {folder} does not exist.")
+
+    image_files = [filename for filename in os.listdir(folder) if filename.lower().endswith(SUPPORTED_IMAGE_FORMATS)]
+
+    if not image_files:
+        raise ValueError(f"No supported image formats found in {folder}.")
+
     hashes = {}
     features = {}
     duplicates = []
 
     with ProcessPoolExecutor() as executor:
         futures = {executor.submit(process_image, os.path.join(folder, filename)): filename
-                   for filename in os.listdir(folder) if
-                   filename.lower().endswith(SUPPORTED_IMAGE_FORMATS)}
+                   for filename in image_files}
 
         for future in as_completed(futures):
             image_path, image_hash, image_features = future.result()
