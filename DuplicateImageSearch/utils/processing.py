@@ -13,6 +13,15 @@ model = Model(inputs=base_model.input, outputs=base_model.get_layer('top_dropout
 
 
 def extract_image_features(image_path):
+    """
+    Extracts features from an image using EfficientNetB0.
+
+    :param image_path: Path to the image.
+    :type image_path: str
+    :return: Feature vector of the image.
+    :rtype: np.ndarray
+    :raises IOError: If the image file cannot be opened.
+    """
     img = image.load_img(image_path, target_size=TARGET_SIZE)
     image_array = image.img_to_array(img)
     image_array = np.expand_dims(image_array, axis=0)
@@ -22,6 +31,16 @@ def extract_image_features(image_path):
 
 
 def process_image(image_path):
+    """
+    Processes an image and extracts its hash and features.
+
+    :param image_path: Path to the image.
+    :type image_path: str
+    :return: Image path, image hash, image features.
+    :rtype: tuple
+    :raises IOError: If the image file cannot be opened.
+    :raises SyntaxError: If the image file contains a syntax error.
+    """
     image = load_image(image_path)
     if image is not None:
         image_hash = imagehash.phash(image)

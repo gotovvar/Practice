@@ -4,6 +4,14 @@ import matplotlib.pyplot as plt
 
 
 def visualize_duplicates(duplicates):
+    """
+    Visualizes duplicate images.
+
+    :param duplicates: List of pairs of paths to duplicate images.
+    :type duplicates: list
+    :raises IOError: If an image file cannot be opened.
+    :raises SyntaxError: If an image file contains a syntax error.
+    """
     for duplicate in duplicates:
         fig, axes = plt.subplots(1, 2, figsize=(10, 5))
 

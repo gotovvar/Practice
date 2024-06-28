@@ -8,6 +8,14 @@ SIMILARITY_THRESHOLD = 0.6
 
 
 def find_duplicate_images(folder):
+    """
+    Finds duplicate images in the specified directory.
+
+    :param folder: Path to the directory containing images.
+    :type folder: str
+    :return: List of pairs of paths to duplicate images.
+    :rtype: list
+    """
     hashes = {}
     features = {}
     duplicates = []
@@ -24,15 +32,15 @@ def find_duplicate_images(folder):
                     duplicates.append((image_path, hashes[image_hash]))
                     continue
 
-                duplicate_found = False
+                is_duplicate_found = False
                 for stored_path, stored_features in features.items():
                     similarity = np.linalg.norm(image_features - stored_features)
                     if similarity < SIMILARITY_THRESHOLD:
                         duplicates.append((image_path, stored_path))
-                        duplicate_found = True
+                        is_duplicate_found = True
                         break
 
-                if not duplicate_found:
+                if not is_duplicate_found:
                     hashes[image_hash] = image_path
                     features[image_path] = image_features
 

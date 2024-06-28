@@ -5,6 +5,9 @@ FOLDER_PATH = 'dataset/Lilly'
 
 
 def main():
+    """
+    Main function to find and visualize duplicate images.
+    """
     duplicates = find_duplicate_images(FOLDER_PATH)
 
     if duplicates:
