@@ -6,12 +6,14 @@ from keras.preprocessing import image
 from keras.models import Model
 from utils.loading import load_image
 
+TARGET_SIZE = (224, 224)
+
 base_model = EfficientNetB0(weights='imagenet')
 model = Model(inputs=base_model.input, outputs=base_model.get_layer('top_dropout').output)
 
 
 def extract_image_features(image_path):
-    img = image.load_img(image_path, target_size=(224, 224))
+    img = image.load_img(image_path, target_size=TARGET_SIZE)
     image_array = image.img_to_array(img)
     image_array = np.expand_dims(image_array, axis=0)
     image_array = preprocess_input(image_array)
