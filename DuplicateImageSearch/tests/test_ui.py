@@ -32,11 +32,9 @@ class TestUI(unittest.TestCase):
 
     def test_visualize_no_duplicates(self):
         duplicates = []
-        try:
+        with self.assertRaises(ValueError) as context:
             visualize_duplicates(duplicates)
-            self.assertTrue(True)
-        except Exception as e:
-            self.fail(f"visualize_duplicates raised an exception: {e}")
+        self.assertEqual(str(context.exception), "The duplicates list is empty. Please provide a list of duplicate image pairs.")
 
 
 if __name__ == '__main__':
